@@ -1,5 +1,0 @@
-
-enum MOVESTATE {
-  RANDOM, 
-  MOUSE
-}
