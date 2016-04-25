@@ -13,7 +13,6 @@ class RandomMove{
     rad = random(0,1);
     valueX = rad*100;
     valueY = rad*100;
-    println(valueX);
   }
   
   void update(){
@@ -27,11 +26,9 @@ class RandomMove{
     vy *= 0.93;
     valueX += vx;
     valueY += vy;
-    x = (noise(1.0*valueX/(20+rad))*width);
-    y = (noise(1.0*valueY/(20+rad))*height);
-    noFill();
-    stroke(0,200,0);
-    ellipse(x,y,10,10);
+    x = (noise(1.0*valueX/(20+rad)));
+    y = (noise(1.0*valueY/(20+rad)));
+ 
   }
   
   float getX(){

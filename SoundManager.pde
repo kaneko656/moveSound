@@ -11,13 +11,17 @@ class SoundManager {
   boolean isMute = false;
 
   SoundManager(Minim _minim) {
+    RandomOut rand = new RandomOut(4);
     minim = _minim;
     createSoundObject(minim, "centerfront_flute.mp3");
     createSoundObject(minim, "centerfront_oboe.mp3");
-    createSoundObject(minim, "centerfront_piano.mp3");
+    //createSoundObject(minim, "centerfront_piano.mp3");
     createSoundObject(minim, "centerfront_chorus.mp3");
     createSoundObject(minim, "centerfront_violin.mp3");
-    changeMoveMode((int)random(sound.size()),MOVESTATE.MOUSE);
+    changeMoveMode(rand.getRandom(),MOVESTATE.MOUSE);
+    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
+    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
+    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
     mouseMove = new MouseMove(10);
   }
 
@@ -58,15 +62,9 @@ class SoundManager {
   }
 
   void draw() {
-    noFill();
-    // 静止
-    if (isMute) {
-      stroke(30);
-      // 動く
-    } else {
-      stroke(125);
+    for (Sound s : sound) {
+      s.draw(width,height);
     }
-    rect(mouseX-25, mouseY-25, 50, 50);
   }
 
   void createSoundObject(Minim minim, String fileName) {

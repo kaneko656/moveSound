@@ -1,5 +1,6 @@
 
 enum MOVESTATE {
   RANDOM, 
-  MOUSE
+  MOUSE,
+  TEMPLATE
 }
