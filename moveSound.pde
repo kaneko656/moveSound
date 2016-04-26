@@ -17,7 +17,7 @@ int templateNum = 7; // 増えたら増加
 
 boolean isView = false;
 boolean isCursorView = false;
-boolean isHelp= false;
+boolean isHelp= true;
 
 void setup(){
   size(800, 800);
@@ -66,6 +66,21 @@ void keyReleased(){
   if(key==' '){
     isHelp=!isHelp;
   }
+  if(key=='0'){
+    soundManager.changeMute(0);
+  }
+  if(key=='1'){
+    soundManager.changeMute(1);
+  }
+  if(key=='2'){
+    soundManager.changeMute(2);
+  }
+  if(key=='3'){
+    soundManager.changeMute(3);
+  }
+  if(key=='4'){
+    soundManager.changeMute(4);
+  }
 }
 
 void helper(){
@@ -74,7 +89,8 @@ void helper(){
   text(" h : on/off  objectView",50,30);
   text(" c : on/off  cursor",50,60);
   text(" m : on/off  play only during the move",50 ,90);
-  
+  text(" space : on/off  help",50 ,120 + 15);
+  text(soundManager.toString(),50, 200);
 }
 
 void stop(){

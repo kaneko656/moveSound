@@ -14,21 +14,22 @@ class SoundManager {
     RandomOut rand = new RandomOut(4);
     minim = _minim;
     createSoundObject(minim, "centerfront_flute.mp3");
-    createSoundObject(minim, "centerfront_oboe.mp3");
+    createSoundObject(minim, "centermid_oboe.mp3");
     //createSoundObject(minim, "centerfront_piano.mp3");
     createSoundObject(minim, "centerfront_chorus.mp3");
     createSoundObject(minim, "centerfront_violin.mp3");
-    changeMoveMode(rand.getRandom(),MOVESTATE.MOUSE);
-    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
-    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
-    changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
+    changeMoveMode(rand.getRandom(), MOVESTATE.MOUSE);
+    changeMoveMode(rand.getRandom(), MOVESTATE.TEMPLATE);
+    changeMoveMode(rand.getRandom(), MOVESTATE.TEMPLATE);
+    changeMoveMode(rand.getRandom(), MOVESTATE.TEMPLATE);
+    //changeMoveMode(rand.getRandom(),MOVESTATE.TEMPLATE);
     mouseMove = new MouseMove(10);
   }
 
   void update() {
-    if(muteMode_move){
+    if (muteMode_move) {
       mute_move();
-    }else{
+    } else {
       if (isMute) {
         unmute();
         isMute=false;
@@ -38,8 +39,8 @@ class SoundManager {
     // 音を動かす
     soundMove();
   }  
-  
-  void mute_move(){
+
+  void mute_move() {
     mouseMove.update(mouseX, mouseY);
     boolean moved = mouseMove.moved();
     // マウスが動いている
@@ -50,7 +51,7 @@ class SoundManager {
         isMute=false;
         println("state == unmute"+frameCount);
       }
-    // マウスが静止
+      // マウスが静止
     } else {
       // muteにする
       if (!isMute) {
@@ -63,7 +64,7 @@ class SoundManager {
 
   void draw() {
     for (Sound s : sound) {
-      s.draw(width,height);
+      s.draw(width, height);
     }
   }
 
@@ -71,9 +72,13 @@ class SoundManager {
     Sound s=new Sound(minim, fileName);
     sound.add(s);
   }
-  
-  void changeMoveMode(int i, MOVESTATE state){
-    if(sound.size()>i){
+  void createSoundObject(Minim minim, String fileName, String fileName2) {
+    Sound s=new Sound(minim, fileName, fileName2);
+    sound.add(s);
+  }
+
+  void changeMoveMode(int i, MOVESTATE state) {
+    if (sound.size()>i) {
       sound.get(i).changeMoveMode(state);
     }
   }
@@ -83,22 +88,40 @@ class SoundManager {
       s.soundMove();
     }
   }
-  
-  boolean ismuteMode_move(){
+
+  boolean ismuteMode_move() {
     return muteMode_move;
   }
-  
-  void setmuteMode_move(boolean state){
+
+  void setmuteMode_move(boolean state) {
     muteMode_move = state;
     println("muteMode_move = "+state);
   }
-  
-  
+
+  String toString() {
+    String str="";
+    for (int i=0; i<sound.size (); i++) {
+      Sound s = sound.get(i);
+      str += "["+i+"]  ";
+      str += s.toString();
+      str += "   moveState:"; 
+      str += s.isState();
+      str += "   sound:"; 
+      str += s.stateMute();
+      str += "\n";
+    }
+    return str;
+  }
 
   void mute() {
     for (Sound s : sound) {
       s.mute();
     }
+  }
+
+  void mute(int n) {
+    if (n>=0 && n<sound.size())
+      sound.get(n).mute();
   }
 
   void unmute() {
@@ -107,10 +130,25 @@ class SoundManager {
     }
   }  
 
+  void unmute(int n) {
+    if (n>=0 && n<sound.size())
+      sound.get(n).unmute();
+  }
+
+  void changeMute(int n) {
+    if (n>=0 && n<sound.size()) {
+      if (sound.get(n).isMuted()) {
+        sound.get(n).unmute();
+      } else {
+        sound.get(n).mute();
+      }
+    }
+  }
+
+
   void stop() {
     for (Sound s : sound) {
       s.stop();
     }
   }
-  
 }

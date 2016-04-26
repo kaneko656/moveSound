@@ -5,17 +5,28 @@
 class Sound {
   Minim minim;
   AudioPlayer player;
+  AudioPlayer player_mid;
   RandomMove randomMove = new RandomMove();
   LoadTemplate template = new LoadTemplate();
   MOVESTATE moveState = MOVESTATE.RANDOM;
 
   float posX=0;
   float posY=0;
+  String soundName="";
 
   Sound(Minim _minim, String fileName) {
     minim = _minim;
     player = minim.loadFile(fileName);
     player.loop();
+    soundName = fileName;
+  }
+
+  Sound(Minim _minim, String fileName, String fileName2) {
+    minim = _minim;
+    player = minim.loadFile(fileName);
+    player_mid = minim.loadFile(fileName2);
+    player.loop();
+    player_mid.loop();
   }
 
   void changeMoveMode(MOVESTATE ms) {
@@ -41,6 +52,9 @@ class Sound {
     posY = 1.0*mouseY/height; // 0~1
     float value = posX*2 - 1;
     setPan(value);
+
+    value = posY * 2 - 1;
+    //setGain(value);
   }
 
   // 乱数
@@ -59,11 +73,20 @@ class Sound {
     float value = posX*2 -1;
     setPan(value);
     template.next();
-   }
+  }
 
+  void setGain(float value) { // -1 ~ 1
+    if (player_mid!=null) {
+      player.setGain( -abs(value-0)*80 );
+      println(player.getGain());
+      player_mid.setGain(-abs(value + 0)*80);
+    }
+  }
 
   void setPan(float value) { // -1 ~　1
     player.setBalance(value);
+    if (player_mid!=null)
+      player_mid.setBalance(value);
   }
 
   void mute() {
@@ -72,6 +95,18 @@ class Sound {
 
   void unmute() {
     player.unmute();
+  }
+  
+  boolean isMuted(){
+    return player.isMuted();
+  }
+  
+  String stateMute(){
+    if(player.isMuted()){
+      return "stop";
+    }else{
+      return "play";
+    }
   }
 
   void stop() {
@@ -83,7 +118,7 @@ class Sound {
     noFill();
     int x = (int)(posX*wid);
     int y = (int)(posY*heigh);
-  
+
     if (moveState == MOVESTATE.MOUSE) {
       // 静止
       if (player.isMuted()) {
@@ -98,5 +133,25 @@ class Sound {
       stroke(125);
       rect(x-25, y-25, 50, 50);
     }
+  }
+  
+  String isState(){
+    return moveState.toString();
+    /*
+    if (moveState == MOVESTATE.RANDOM) {
+      return "RANDOM";
+    }
+    if (moveState == MOVESTATE.MOUSE) {
+      return "MOUSE";
+    }
+    if (moveState == MOVESTATE.TEMPLATE) {
+      return "TEMPLATE";
+    }
+    return "";
+    */
+  }
+  
+  String toString(){
+    return soundName;
   }
 }
