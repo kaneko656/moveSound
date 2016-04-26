@@ -7,13 +7,14 @@ class LoadTemplate{
   float []y;
   
   int head=0;
+  int templateNum=0;
   
   LoadTemplate(){
     int templateRand = templateRandomOut.getRandom()+1;
     println("moveTemplate/move_"+templateRand+".csv");
 
     table = loadTable("moveTemplate/move_"+templateRand+".csv", "header");
-    
+    templateNum = templateRand;
     int c = table.getRowCount();
     time = new int[c];
     x = new float[c];
@@ -33,6 +34,10 @@ class LoadTemplate{
   
   float getY(){
     return y[head];
+  }
+  
+  int getTemplateNum(){
+    return templateNum;
   }
   
   void next(){

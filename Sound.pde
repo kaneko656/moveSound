@@ -52,8 +52,8 @@ class Sound {
     posY = 1.0*mouseY/height; // 0~1
     float value = posX*2 - 1;
     setPan(value);
-
-    value = posY * 2 - 1;
+    value = 1-posY;
+    setGain(value);
     //setGain(value);
   }
 
@@ -64,6 +64,8 @@ class Sound {
     randomMove.update();
     float value = posX*2 - 1;
     setPan(value);
+    value = 1- posY;
+    setGain(value);
   }
 
   // Template
@@ -72,15 +74,13 @@ class Sound {
     posY = template.getY(); // 0~1
     float value = posX*2 -1;
     setPan(value);
+    value = 1- posY;
+    setGain(value);
     template.next();
   }
 
   void setGain(float value) { // -1 ~ 1
-    if (player_mid!=null) {
-      player.setGain( -abs(value-0)*80 );
-      println(player.getGain());
-      player_mid.setGain(-abs(value + 0)*80);
-    }
+    player.setGain( -value*30 );
   }
 
   void setPan(float value) { // -1 ~　1
@@ -96,17 +96,24 @@ class Sound {
   void unmute() {
     player.unmute();
   }
-  
-  boolean isMuted(){
+
+  boolean isMuted() {
     return player.isMuted();
   }
-  
-  String stateMute(){
-    if(player.isMuted()){
+
+  String stateMute() {
+    if (player.isMuted()) {
       return "stop";
-    }else{
+    } else {
       return "play";
     }
+  }
+  
+  int getTemplateNum(){
+    if(template!=null){
+      return template.getTemplateNum();
+    }
+    return -1;
   }
 
   void stop() {
@@ -134,24 +141,24 @@ class Sound {
       rect(x-25, y-25, 50, 50);
     }
   }
-  
-  String isState(){
+
+  String isState() {
     return moveState.toString();
     /*
     if (moveState == MOVESTATE.RANDOM) {
-      return "RANDOM";
-    }
-    if (moveState == MOVESTATE.MOUSE) {
-      return "MOUSE";
-    }
-    if (moveState == MOVESTATE.TEMPLATE) {
-      return "TEMPLATE";
-    }
-    return "";
-    */
+     return "RANDOM";
+     }
+     if (moveState == MOVESTATE.MOUSE) {
+     return "MOUSE";
+     }
+     if (moveState == MOVESTATE.TEMPLATE) {
+     return "TEMPLATE";
+     }
+     return "";
+     */
   }
-  
-  String toString(){
+
+  String toString() {
     return soundName;
   }
 }

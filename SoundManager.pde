@@ -106,6 +106,8 @@ class SoundManager {
       str += s.toString();
       str += "   moveState:"; 
       str += s.isState();
+      str += "   template:";
+      str += s.getTemplateNum();
       str += "   sound:"; 
       str += s.stateMute();
       str += "\n";
